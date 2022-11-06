@@ -1,17 +1,26 @@
-FROM node:14.18.0
-
-WORKDIR /usr
-
-COPY package.json ./
-
-RUN npm install
-
-COPY src/index.ts ./src/index.ts
+FROM node:16.13.2
 
 
-RUN npx tsc src/index.ts
+WORKDIR /app
+
+ENV PING_LISTEN_PORT=8000
 
 
-EXPOSE 8000
+COPY /package*.json .
 
-CMD ["npm","run","start"]  
+
+RUN npm i
+
+COPY src .
+COPY tsconfig.json .
+
+
+RUN npx tsc 
+
+
+RUN useradd -r appuser
+USER appuser
+
+
+CMD node build/index.js
+
