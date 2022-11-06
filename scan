@@ -1,0 +1,1 @@
+connect ENOENT /var/run/docker.sock
